@@ -13,13 +13,11 @@ desktop application for _the project_
 
 ui created with qtdesigner and python code generated with `pyuic5`
 
-to generate:
-```$ pyuic5 -x mainwindow.ui -o mainwindow.py```
-note that this will overwrite any application logic/additions to the python script 
+mainwindow.py originally generated with pyuic
 
 ## TODO
 
-- refactor/clean up generated code
-- add matplotlib plot to central canvas and integrate this with analysis stuff
-- implement tools stuff (add,move,erase..)
-- implement file handling (loading, exporting)
+[x] refactor/clean up generated code
+[ ] add matplotlib plot to central canvas and integrate this with analysis stuff
+[ ] implement tools stuff (add,move,erase..)
+[ ] implement file handling (loading, exporting)
