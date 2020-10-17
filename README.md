@@ -16,6 +16,9 @@ ui created with qtdesigner and python code generated with `pyuic5`
 ## TODO
 
 [x] refactor/clean up generated code
+
 [ ] add matplotlib plot to central canvas and integrate this with analysis stuff
+
 [ ] implement tools stuff (add,move,erase..)
+
 [ ] implement file handling (loading, exporting)
