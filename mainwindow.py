@@ -6,6 +6,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from enum import Enum
+from pathlib import Path
+import glob
+import os
+
+# import imagelist
 
 
 class Ui_MainWindow():
@@ -25,6 +30,9 @@ class Ui_MainWindow():
         STATE_ADD    : "add",
         STATE_ERASE  : "erase"
     }
+
+    current_dir = Path.home()
+    current_file = ""
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -54,14 +62,18 @@ class Ui_MainWindow():
         # black color theming
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
         palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Shadow, brush)
         palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ToolTipText, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
         palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ToolTipText, brush)
         palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Shadow, brush)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ToolTipText, brush)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Shadow, brush)
+
+        # (70, 70, 70) theming
+        brush = QtGui.QBrush(QtGui.QColor(70, 70, 70))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
 
         # (84, 83, 81) theming
         brush = QtGui.QBrush(QtGui.QColor(84, 83, 81))
@@ -169,7 +181,7 @@ class Ui_MainWindow():
         self.action_bar.setObjectName("action_bar")
 
         # setup open button
-        self.open_button = QtWidgets.QToolButton(self.action_bar, clicked = self.open_clicked)
+        self.open_button = QtWidgets.QToolButton(self.action_bar)
         self.open_button.setGeometry(QtCore.QRect(1, 10, 48, 60))
         self.open_button.setAutoFillBackground(False)
         self.open_button.setStyleSheet("color:rgb(255, 255, 255)")
@@ -182,7 +194,7 @@ class Ui_MainWindow():
         self.open_button.setObjectName("open_button")
 
         # setup export button
-        self.export_button = QtWidgets.QToolButton(self.action_bar, clicked = self.export_clicked)
+        self.export_button = QtWidgets.QToolButton(self.action_bar)
         self.export_button.setGeometry(QtCore.QRect(1, 80, 48, 60))
         self.export_button.setAutoFillBackground(False)
         self.export_button.setStyleSheet("color:rgb(255, 255, 255)")
@@ -195,7 +207,7 @@ class Ui_MainWindow():
         self.export_button.setObjectName("export_button")
 
         # setup detect button
-        self.detect_button = QtWidgets.QToolButton(self.action_bar, clicked = self.detect_clicked)
+        self.detect_button = QtWidgets.QToolButton(self.action_bar)
         self.detect_button.setGeometry(QtCore.QRect(1, 150, 48, 60))
         self.detect_button.setAutoFillBackground(False)
         self.detect_button.setStyleSheet("color:rgb(255, 255, 255)")
@@ -208,7 +220,7 @@ class Ui_MainWindow():
         self.detect_button.setObjectName("detect_button")
 
         # setup move/normal mode button
-        self.move_button = QtWidgets.QToolButton(self.action_bar, clicked = self.move_clicked)
+        self.move_button = QtWidgets.QToolButton(self.action_bar)
         self.move_button.setGeometry(QtCore.QRect(1, 230, 48, 60))
         self.move_button.setAutoFillBackground(False)
         self.move_button.setStyleSheet("color:rgb(255, 255, 255)")
@@ -221,7 +233,7 @@ class Ui_MainWindow():
         self.move_button.setObjectName("move_button")
 
         # setup add button
-        self.add_button = QtWidgets.QToolButton(self.action_bar, clicked = self.add_clicked)
+        self.add_button = QtWidgets.QToolButton(self.action_bar)
         self.add_button.setGeometry(QtCore.QRect(1, 300, 48, 60))
         self.add_button.setAutoFillBackground(False)
         self.add_button.setStyleSheet("color:rgb(255, 255, 255)")
@@ -234,7 +246,7 @@ class Ui_MainWindow():
         self.add_button.setObjectName("add_button")
 
         # setup erase button
-        self.erase_button = QtWidgets.QToolButton(self.action_bar, clicked = self.erase_clicked)
+        self.erase_button = QtWidgets.QToolButton(self.action_bar)
         self.erase_button.setGeometry(QtCore.QRect(1, 370, 48, 60))
         self.erase_button.setAutoFillBackground(False)
         self.erase_button.setStyleSheet("color:rgb(255, 255, 255)")
@@ -264,20 +276,21 @@ class Ui_MainWindow():
         self.canvas_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.canvas_frame.setObjectName("canvas_frame")
         self.verticalLayout.addWidget(self.canvas_frame)
-        self.file_scrollarea = QtWidgets.QScrollArea(self.center_frame)
+
+        # file list view setup
+        # self.file_list_view = imagelist.ImageListWidget("/home/me/pictures/", self.center_frame)
+        self.file_list_view = QtWidgets.QListWidget(self.center_frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.file_scrollarea.sizePolicy().hasHeightForWidth())
-        self.file_scrollarea.setSizePolicy(sizePolicy)
-        self.file_scrollarea.setMinimumSize(QtCore.QSize(0, 120))
-        self.file_scrollarea.setWidgetResizable(True)
-        self.file_scrollarea.setObjectName("file_scrollarea")
-        self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 880, 118))
-        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.file_scrollarea.setWidget(self.scrollAreaWidgetContents)
-        self.verticalLayout.addWidget(self.file_scrollarea)
+        sizePolicy.setHeightForWidth(self.file_list_view.sizePolicy().hasHeightForWidth())
+        self.file_list_view.setSizePolicy(sizePolicy)
+        self.file_list_view.setMinimumSize(QtCore.QSize(0, 120))
+        self.file_list_view.setMaximumSize(QtCore.QSize(16777215, 120))
+        self.file_list_view.setBaseSize(QtCore.QSize(0, 0))
+        self.file_list_view.setObjectName("file_list_view")
+        self.verticalLayout.addWidget(self.file_list_view)
+
         self.main_layout.addWidget(self.center_frame)
         self.horizontalLayout.addLayout(self.main_layout)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -331,7 +344,7 @@ class Ui_MainWindow():
         self.menubar.addAction(self.menuHelp.menuAction())
 
 
-    # further setup stuff, do not edit
+    # further required setup stuff
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -354,40 +367,75 @@ class Ui_MainWindow():
         self.actionClose_All.setText(_translate("MainWindow", "Close All"))
         self.actionExit.setText(_translate("MainWindow", "Exit"))
 
+        # connect event handlers to action bar buttons
+        self.open_button.clicked.connect(self.open_clicked)
+        self.export_button.clicked.connect(self.export_clicked)
+        self.detect_button.clicked.connect(self.detect_clicked)
+        self.move_button.clicked.connect(self.move_clicked)
+        self.add_button.clicked.connect(self.add_clicked)
+        self.erase_button.clicked.connect(self.erase_clicked)
+
+        self.file_list_view.itemDoubleClicked.connect(self.file_list_clicked)
+
+
 
     # ACTIONS
 
     # on open button click
     def open_clicked(self):
-        self.statusbar.showMessage("open")
-        self.statusbar.showMessage(self.state_dict[self.edit_state])
+        self.statusbar.showMessage("opening..")
+        self.current_file = self.open_file_picker()
+        self.current_dir = str(Path(self.current_file).parent)
+
+        imagefilter = [".png", ".jpg", ".bmp", ".gif"]
+
+        dir_contents = os.listdir(self.current_dir)
+        dir_contents.sort()
+        for imagefile in dir_contents:
+            _, ext = os.path.splitext(imagefile)
+            if ext.lower() in imagefilter:
+                self.file_list_view.addItem(imagefile)
+
+        self.update_statusbar()
 
     # on export button click
     def export_clicked(self):
         self.statusbar.showMessage("export")
-        self.statusbar.showMessage(self.state_dict[self.edit_state])
+        self.update_statusbar()
 
     # on detect button click
     def detect_clicked(self):
         self.statusbar.showMessage("detect")
-        self.statusbar.showMessage(self.state_dict[self.edit_state])
+        self.update_statusbar()
 
     # on move button click
     def move_clicked(self):
         self.edit_state = self.STATE_NORMAL
-        self.statusbar.showMessage(self.state_dict[self.edit_state])
+        self.update_statusbar()
 
     # on add button click
     def add_clicked(self):
         self.edit_state = self.STATE_ADD
-        self.statusbar.showMessage(self.state_dict[self.edit_state])
+        self.update_statusbar()
 
     # on erase button click
     def erase_clicked(self):
         self.edit_state = self.STATE_ERASE
-        self.statusbar.showMessage(self.state_dict[self.edit_state])
+        self.update_statusbar()
 
+    def file_list_clicked(self, item):
+        self.current_file = os.path.join(self.current_dir, item.text())
+        self.update_statusbar()
 
+    def update_statusbar(self):
+        _, filename = os.path.split(self.current_file)
+        msgstr = " [" + self.state_dict[self.edit_state] + "]    " + filename
+        self.statusbar.showMessage(msgstr)
+
+    def open_file_picker(self):
+        imagefilter = "Image Files (*.png *.jpg *.bmp *.PNG *.JPG *.BMP *.GIF *.gif)"
+        filename = QtWidgets.QFileDialog.getOpenFileName(filter=imagefilter)
+        return filename[0]
 
 
 if __name__ == "__main__":
