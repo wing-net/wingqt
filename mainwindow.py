@@ -7,8 +7,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from enum import Enum
 from pathlib import Path
-import glob
 import os
+
+import palette
 
 # import imagelist
 
@@ -42,117 +43,7 @@ class Ui_MainWindow():
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-
-    def setupPalette(self, MainWindow):
-        palette = QtGui.QPalette()
-
-        # white color theming
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.WindowText, brush)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Text, brush)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.BrightText, brush)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ButtonText, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Text, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.BrightText, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ButtonText, brush)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.BrightText, brush)
-
-        # black color theming
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Shadow, brush)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ToolTipText, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ToolTipText, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Shadow, brush)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ToolTipText, brush)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Shadow, brush)
-
-        # (70, 70, 70) theming
-        brush = QtGui.QBrush(QtGui.QColor(70, 70, 70))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
-
-        # (84, 83, 81) theming
-        brush = QtGui.QBrush(QtGui.QColor(84, 83, 81))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Button, brush)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Window, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Button, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Window, brush)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.AlternateBase, brush)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Window, brush)
-
-        # (42, 42, 41) theming
-        brush = QtGui.QBrush(QtGui.QColor(42, 42, 41))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Dark, brush)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Text, brush)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Dark, brush)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Dark, brush)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, brush)
-
-        # (42, 41, 40) theming
-        brush = QtGui.QBrush(QtGui.QColor(42, 41, 40))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.AlternateBase, brush)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.AlternateBase, brush)
-
-        # (255, 255, 220) theming
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 220))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ToolTipBase, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ToolTipBase, brush)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ToolTipBase, brush)
-
-        # white semi-transparent theming
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255, 128))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.PlaceholderText, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.PlaceholderText, brush)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.PlaceholderText, brush)
-
-        # (126, 125, 122) theming
-        brush = QtGui.QBrush(QtGui.QColor(126, 125, 122))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Light, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Light, brush)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Light, brush)
-
-        # (105, 104, 101) theming
-        brush = QtGui.QBrush(QtGui.QColor(105, 104, 101))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Midlight, brush)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Midlight, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Midlight, brush)
-
-        # (56, 56, 54) theming
-        brush = QtGui.QBrush(QtGui.QColor(56, 56, 54))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Mid, brush)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Mid, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Mid, brush)
-
-        # (94, 59, 99) theming
-        brush = QtGui.QBrush(QtGui.QColor(94, 59, 99))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Highlight, brush)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Highlight, brush)
-
-        # misc theming
-        brush = QtGui.QBrush(QtGui.QColor(84, 83, 81))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Button, brush)
-
-        brush = QtGui.QBrush(QtGui.QColor(145, 145, 145))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Highlight, brush)
-
-        MainWindow.setPalette(palette)
+    setupPalette = palette.setupPalette
 
 
     def setupWidgets(self, MainWindow):
@@ -275,10 +166,19 @@ class Ui_MainWindow():
         self.canvas_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.canvas_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.canvas_frame.setObjectName("canvas_frame")
+
+        # image view setup
+        self.canvas_layout = QtWidgets.QHBoxLayout(self.canvas_frame)
+        self.canvas_layout.setObjectName("canvas_layout")
+        self.image_view = QtWidgets.QLabel(self.canvas_frame)
+        self.image_view.setText("")
+        # self.image_view.setScaledContents(True)
+        self.image_view.setObjectName("image_view")
+        self.canvas_layout.addWidget(self.image_view)
+
         self.verticalLayout.addWidget(self.canvas_frame)
 
         # file list view setup
-        # self.file_list_view = imagelist.ImageListWidget("/home/me/pictures/", self.center_frame)
         self.file_list_view = QtWidgets.QListWidget(self.center_frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -396,7 +296,9 @@ class Ui_MainWindow():
             if ext.lower() in imagefilter:
                 self.file_list_view.addItem(imagefile)
 
+        self.update_image()
         self.update_statusbar()
+        #self.update_image()
 
     # on export button click
     def export_clicked(self):
@@ -425,12 +327,25 @@ class Ui_MainWindow():
 
     def file_list_clicked(self, item):
         self.current_file = os.path.join(self.current_dir, item.text())
+        self.update_image()
         self.update_statusbar()
+        #self.update_image()
+
+    def update_image(self):
+        width = self.image_view.width()
+        height = self.image_view.height()
+        self.image_view.setPixmap(QtGui.QPixmap(self.current_file).scaled(
+                                  width, height, QtCore.Qt.KeepAspectRatio))
 
     def update_statusbar(self):
         _, filename = os.path.split(self.current_file)
         msgstr = " [" + self.state_dict[self.edit_state] + "]    " + filename
         self.statusbar.showMessage(msgstr)
+
+    # temp update image
+    # def update_image(self):
+    #     pixmap = QtGui.QPixmap(self.current_file)
+    #     self.image_display.setPixmap(pixmap)
 
     def open_file_picker(self):
         imagefilter = "Image Files (*.png *.jpg *.bmp *.PNG *.JPG *.BMP *.GIF *.gif)"
@@ -438,11 +353,3 @@ class Ui_MainWindow():
         return filename[0]
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
