@@ -10,6 +10,7 @@ from pathlib import Path
 import os
 
 import palette
+from canvas import Canvas
 
 # import imagelist
 
@@ -170,8 +171,9 @@ class Ui_MainWindow():
         # image view setup
         self.canvas_layout = QtWidgets.QHBoxLayout(self.canvas_frame)
         self.canvas_layout.setObjectName("canvas_layout")
-        self.image_view = QtWidgets.QLabel(self.canvas_frame)
-        self.image_view.setText("")
+        self.image_view = Canvas(self.canvas_frame)
+        #self.image_view = QtWidgets.QLabel(self.canvas_frame)
+        #self.image_view.setText("")
         # self.image_view.setScaledContents(True)
         self.image_view.setObjectName("image_view")
         self.canvas_layout.addWidget(self.image_view)
@@ -298,11 +300,11 @@ class Ui_MainWindow():
 
         self.update_image()
         self.update_statusbar()
-        #self.update_image()
 
     # on export button click
     def export_clicked(self):
-        self.statusbar.showMessage("export")
+        self.statusbar.showMessage("exporting...")
+        self.image_view.exportLandmarks()
         self.update_statusbar()
 
     # on detect button click
@@ -313,39 +315,35 @@ class Ui_MainWindow():
     # on move button click
     def move_clicked(self):
         self.edit_state = self.STATE_NORMAL
+        self.image_view.setNormal()
         self.update_statusbar()
 
     # on add button click
     def add_clicked(self):
         self.edit_state = self.STATE_ADD
+        self.image_view.setAdd()
         self.update_statusbar()
 
     # on erase button click
     def erase_clicked(self):
         self.edit_state = self.STATE_ERASE
+        self.image_view.setErase()
         self.update_statusbar()
 
     def file_list_clicked(self, item):
         self.current_file = os.path.join(self.current_dir, item.text())
         self.update_image()
         self.update_statusbar()
-        #self.update_image()
 
     def update_image(self):
-        width = self.image_view.width()
-        height = self.image_view.height()
-        self.image_view.setPixmap(QtGui.QPixmap(self.current_file).scaled(
-                                  width, height, QtCore.Qt.KeepAspectRatio))
+        #width = self.image_view.width()
+        #height = self.image_view.height()
+        self.image_view.setImage(self.current_file)
 
     def update_statusbar(self):
         _, filename = os.path.split(self.current_file)
         msgstr = " [" + self.state_dict[self.edit_state] + "]    " + filename
         self.statusbar.showMessage(msgstr)
-
-    # temp update image
-    # def update_image(self):
-    #     pixmap = QtGui.QPixmap(self.current_file)
-    #     self.image_display.setPixmap(pixmap)
 
     def open_file_picker(self):
         imagefilter = "Image Files (*.png *.jpg *.bmp *.PNG *.JPG *.BMP *.GIF *.gif)"
