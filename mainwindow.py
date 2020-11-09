@@ -303,9 +303,12 @@ class Ui_MainWindow():
 
     # on export button click
     def export_clicked(self):
-        self.statusbar.showMessage("exporting...")
-        self.image_view.exportLandmarks()
-        self.update_statusbar()
+        if self.current_file != "":
+            self.statusbar.showMessage("exporting...")
+            filename = self.save_file_picker()
+            print(filename)
+            self.image_view.exportLandmarks(filename)
+            self.update_statusbar()
 
     # on detect button click
     def detect_clicked(self):
@@ -347,7 +350,19 @@ class Ui_MainWindow():
 
     def open_file_picker(self):
         imagefilter = "Image Files (*.png *.jpg *.bmp *.PNG *.JPG *.BMP *.GIF *.gif)"
-        filename = QtWidgets.QFileDialog.getOpenFileName(filter=imagefilter)
+        caption = "Import image file"
+        filename = QtWidgets.QFileDialog.getOpenFileName(caption=caption,
+                                                         filter=imagefilter)
+        return filename[0]
+
+    def save_file_picker(self):
+        imagefilter = "CSV Files (*.csv *.txt)"
+        caption = "Export data to CSV"
+        imgname,_ = os.path.splitext(self.current_file)
+        prefname = os.path.join(os.getcwd(), imgname + ".csv")
+        filename = QtWidgets.QFileDialog.getSaveFileName(caption=caption,
+                                                         directory=prefname,
+                                                         filter=imagefilter)
         return filename[0]
 
 

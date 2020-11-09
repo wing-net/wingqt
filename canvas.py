@@ -10,9 +10,10 @@ class Canvas(QtWidgets.QWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__()
-        self.mode = 0 # temp: 0 -> move, 1 -> add, 2 -> erase
+        self.mode = 0   # temp: 0 -> none, 1 -> add, 2 -> erase, 3 -> move
 
         self.points = []
+        self.drag_index = -1
         self.pointer = QtCore.QPoint()
         self.end = QtCore.QPoint()
 
@@ -49,6 +50,11 @@ class Canvas(QtWidgets.QWidget):
             if (self.pointer.x() - self.pixmap.width() < 0 and
                     self.pointer.y() - self.pixmap.height() < 0):
                 self.points.append(self.pointer)
+        elif self.mode == 3:
+            # select the index of the point the user is clicking on
+            for i, pt in enumerate(self.points):
+                if abs((pt - self.pointer).manhattanLength()) < 20:
+                    self.drag_index = i
         self.update()
 
     def setImage(self, image_path):
@@ -60,8 +66,9 @@ class Canvas(QtWidgets.QWidget):
                             QtCore.Qt.KeepAspectRatio, QtCore.Qt.FastTransformation)
         self.update()
 
+
     def setNormal(self):
-        self.mode = 0
+        self.mode = 3
 
     def setAdd(self):
         self.mode = 1
@@ -69,18 +76,12 @@ class Canvas(QtWidgets.QWidget):
     def setErase(self):
         self.mode = 2
 
-    def exportLandmarks(self, filename=None):
-        cwd = os.getcwd()
-        if filename is None:
-            filename,_ = os.path.splitext(self.image_name)
-            filename += ".csv"
-
-        print(os.path.join(cwd, filename))
-        with open(os.path.join(cwd, filename), mode='w+') as csv_file:
-            writer = csv.writer(csv_file, delimiter=',')
-            for point in self.convertRelativePoints():
-                writer.writerow([point.x(), point.y()])
-        print(self.points)
+    def exportLandmarks(self, filepath):
+        if filepath is not None:
+            with open(filepath, mode='w+') as csv_file:
+                writer = csv.writer(csv_file, delimiter=',')
+                for point in self.convertRelativePoints():
+                    writer.writerow([point.x(), point.y()])
 
     def convertRelativePoints(self):
         points_og = []
@@ -94,25 +95,14 @@ class Canvas(QtWidgets.QWidget):
 
 
     def mouseMoveEvent(self, event):
-        if self.mode == 3:
+        if self.mode == 3 and self.drag_index >= 0:
             self.end = event.pos()
+            self.points[self.drag_index] = event.pos()
             self.update()
-        elif self.mode == 1:
-            pass
-        elif self.mode == 2:
-            pass
-        elif self.mode == 0:
-            pass
 
     def mouseReleaseEvent(self, event):
-        if self.mode == 3:
-            self.pointer = event.pos()
+        if self.mode == 3 and self.drag_index >= 0:
             self.end = event.pos()
+            self.points[self.drag_index] = event.pos()
+            self.drag_index = -1    # indicate we arent dragging anymore
             self.update()
-        elif self.mode == 1:
-            pass
-        elif self.mode == 2:
-            pass
-        elif self.mode == 0:
-            pass
-

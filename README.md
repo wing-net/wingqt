@@ -27,12 +27,11 @@ wingqt/ $ python wingqt.py
 - [x] add central canvas with QPainter
 - [x] implement tools stuff (add,erase..)
 - [x] implement file handling (loading, exporting)
-- [ ] add move/dragging functionality
+- [x] add move/dragging functionality
 - [ ] add (marked) image saving
-- [ ] add file picker to choose export name
+- [x] add file picker to choose export name
 - [ ] give menu bar actual functionality
 - [ ] add keybindings for switching modes etc
 - [ ] add draggable box/line to mark length
 - [ ] hook up detection schemes to automatically mark length, points
-- [ ] add keybindings for switching modes etc
 - [ ] add config options? (export format, detection scheme, etc)
