@@ -33,6 +33,8 @@ class Ui_MainWindow():
         STATE_ERASE  : "erase"
     }
 
+    show_length_ctrl = False
+
     current_dir = Path.home()
     current_file = ""
 
@@ -87,7 +89,7 @@ class Ui_MainWindow():
 
         # setup export button
         self.export_button = QtWidgets.QToolButton(self.action_bar)
-        self.export_button.setGeometry(QtCore.QRect(1, 80, 48, 60))
+        self.export_button.setGeometry(QtCore.QRect(1, 70, 48, 60))
         self.export_button.setAutoFillBackground(False)
         self.export_button.setStyleSheet("color:rgb(255, 255, 255)")
         icon1 = QtGui.QIcon()
@@ -100,7 +102,7 @@ class Ui_MainWindow():
 
         # setup detect button
         self.detect_button = QtWidgets.QToolButton(self.action_bar)
-        self.detect_button.setGeometry(QtCore.QRect(1, 150, 48, 60))
+        self.detect_button.setGeometry(QtCore.QRect(1, 130, 48, 60))
         self.detect_button.setAutoFillBackground(False)
         self.detect_button.setStyleSheet("color:rgb(255, 255, 255)")
         icon2 = QtGui.QIcon()
@@ -113,9 +115,9 @@ class Ui_MainWindow():
 
         # setup move/normal mode button
         self.move_button = QtWidgets.QToolButton(self.action_bar)
-        self.move_button.setGeometry(QtCore.QRect(1, 230, 48, 60))
+        self.move_button.setGeometry(QtCore.QRect(1, 200, 48, 60))
         self.move_button.setAutoFillBackground(False)
-        self.move_button.setStyleSheet("color:rgb(255, 255, 255)")
+        self.move_button.setStyleSheet("color:white")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("resources/pointer.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.move_button.setIcon(icon3)
@@ -126,9 +128,9 @@ class Ui_MainWindow():
 
         # setup add button
         self.add_button = QtWidgets.QToolButton(self.action_bar)
-        self.add_button.setGeometry(QtCore.QRect(1, 300, 48, 60))
+        self.add_button.setGeometry(QtCore.QRect(1, 260, 48, 60))
         self.add_button.setAutoFillBackground(False)
-        self.add_button.setStyleSheet("color:rgb(255, 255, 255)")
+        self.add_button.setStyleSheet("color:white")
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap("resources/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.add_button.setIcon(icon4)
@@ -139,9 +141,9 @@ class Ui_MainWindow():
 
         # setup erase button
         self.erase_button = QtWidgets.QToolButton(self.action_bar)
-        self.erase_button.setGeometry(QtCore.QRect(1, 370, 48, 60))
+        self.erase_button.setGeometry(QtCore.QRect(1, 320, 48, 60))
         self.erase_button.setAutoFillBackground(False)
-        self.erase_button.setStyleSheet("color:rgb(255, 255, 255)")
+        self.erase_button.setStyleSheet("color:white")
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap("resources/erase.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.erase_button.setIcon(icon5)
@@ -150,11 +152,20 @@ class Ui_MainWindow():
         self.erase_button.setAutoRaise(True)
         self.erase_button.setObjectName("erase_button")
 
-        self.line = QtWidgets.QFrame(self.action_bar)
-        self.line.setGeometry(QtCore.QRect(0, 217, 50, 10))
-        self.line.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line.setObjectName("line")
+        # setup erase button
+        self.length_button = QtWidgets.QToolButton(self.action_bar)
+        self.length_button.setGeometry(QtCore.QRect(1,380, 48, 60))
+        self.length_button.setAutoFillBackground(False)
+        self.length_button.setStyleSheet("color:white")
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap("resources/erase.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.length_button.setIcon(icon5)
+        self.length_button.setIconSize(QtCore.QSize(32, 32))
+        self.length_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        self.length_button.setAutoRaise(True)
+        self.length_button.setObjectName("length_button")
+        self.length_button.setToolTip("Show/hide wing length control points")
+
         self.main_layout.addWidget(self.action_bar)
         self.center_frame = QtWidgets.QFrame(self.centralwidget)
         self.center_frame.setMinimumSize(QtCore.QSize(25, 120))
@@ -256,6 +267,7 @@ class Ui_MainWindow():
         self.move_button.setText(_translate("MainWindow", "move"))
         self.add_button.setText(_translate("MainWindow", "add"))
         self.erase_button.setText(_translate("MainWindow", "erase"))
+        self.length_button.setText(_translate("MainWindow", "length"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
         self.menuAnalyze.setTitle(_translate("MainWindow", "Analyze"))
@@ -276,6 +288,7 @@ class Ui_MainWindow():
         self.move_button.clicked.connect(self.move_clicked)
         self.add_button.clicked.connect(self.add_clicked)
         self.erase_button.clicked.connect(self.erase_clicked)
+        self.length_button.clicked.connect(self.length_clicked)
 
         self.file_list_view.itemDoubleClicked.connect(self.file_list_clicked)
 
@@ -310,6 +323,23 @@ class Ui_MainWindow():
             self.image_view.exportLandmarks(filename)
             self.update_statusbar()
 
+    def change_button_state(self):
+        checked_style = "color:white;background-color:#5e3b63"
+        unchecked_style = "color:white;background-color:#5e3b63"
+        if self.edit_state == self.STATE_NORMAL:
+
+            self.move_button.setStyleSheet("color:white;background-color:#5e3b63")
+            self.add_button.setStyleSheet("color:white;background-color:#353537")
+            self.erase_button.setStyleSheet("color:white;background-color:#353537")
+        elif self.edit_state == self.STATE_ADD:
+            self.move_button.setStyleSheet("color:white;background-color:#353537")
+            self.add_button.setStyleSheet("color:white;background-color:#5e3b63")
+            self.erase_button.setStyleSheet("color:white;background-color:#353537")
+        elif self.edit_state == self.STATE_ERASE:
+            self.move_button.setStyleSheet("color:white;background-color:#353537")
+            self.add_button.setStyleSheet("color:white;background-color:#353537")
+            self.erase_button.setStyleSheet("color:white;background-color:#5e3b63")
+
     # on detect button click
     def detect_clicked(self):
         self.statusbar.showMessage("detect")
@@ -318,20 +348,36 @@ class Ui_MainWindow():
     # on move button click
     def move_clicked(self):
         self.edit_state = self.STATE_NORMAL
+        self.change_button_state()
         self.image_view.setNormal()
         self.update_statusbar()
 
     # on add button click
     def add_clicked(self):
         self.edit_state = self.STATE_ADD
+        self.change_button_state()
         self.image_view.setAdd()
         self.update_statusbar()
 
     # on erase button click
     def erase_clicked(self):
         self.edit_state = self.STATE_ERASE
+        self.change_button_state()
         self.image_view.setErase()
         self.update_statusbar()
+
+    # on length ctrl toggle clicked
+    def length_clicked(self):
+        if self.show_length_ctrl == False:
+            self.show_length_ctrl = True
+            self.image_view.setLength()
+            self.length_button.setStyleSheet("color:white;background-color:#5e3b63")
+        else:
+            self.show_length_ctrl = False
+            self.image_view.setNormal()
+            self.edit_state = self.STATE_NORMAL
+            self.change_button_state()
+            self.length_button.setStyleSheet("color:white;background-color:#353537")
 
     def file_list_clicked(self, item):
         self.current_file = os.path.join(self.current_dir, item.text())

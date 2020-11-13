@@ -32,9 +32,11 @@ wingqt/ $ python wingqt.py
  - [x] add move/dragging functionality
  - [x] add file picker to choose export name 
  - [ ] add (marked) image saving 
+ - [x] add session saving for open image files
+ - [ ] add swap files for session recovery
  - [ ] give menu bar actual functionality 
  - [ ] add keybindings for switching modes etc 
- - [ ] add draggable box/line to mark/display length
+ - [x] add draggable box/line to mark/display length
  - [ ] hook up detection schemes to automatically mark length, points
- - [ ] improve UI (pressed appearance on buttons, etc)
- - [ ] add config options? (export format, detection scheme, etc)
+ - [x] improve UI (pressed appearance on buttons, etc)
+ - [ ] add detect-all, export-all
