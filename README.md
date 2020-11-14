@@ -39,4 +39,4 @@ wingqt/ $ python wingqt.py
  - [x] add draggable box/line to mark/display length
  - [ ] hook up detection schemes to automatically mark length, points
  - [x] improve UI (pressed appearance on buttons, etc)
- - [ ] add detect-all, export-all
+ - [x] add detect-all, export-all

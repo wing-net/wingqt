@@ -17,9 +17,12 @@ class Canvas(QtWidgets.QWidget):
         self.points = []
         self.session_points = {}    # store points for all images opened
                                     # format: { "imgname.ext" : [QPoint(x1,y1), ...] }
+        self.session_points_actual = {}     # store original resolution session data for exporting
+
         self.wing_length = 0
         self.length_coords = []
         self.session_lengths = {}   # same idea but we store length/end data
+        self.session_lengths_actual = {}
 
         self.drag_index = -1
         self.length_drag_index = -1
@@ -36,7 +39,7 @@ class Canvas(QtWidgets.QWidget):
 
 
     def paintEvent(self, event):
-        if (self.image_name != ""):
+        if self.image_name != "":
             qp = QtGui.QPainter(self)
             # for now, we just keep the size the image was opened at
             qp.drawPixmap(self.pixmap.rect(), self.pixmap)
@@ -81,6 +84,9 @@ class Canvas(QtWidgets.QWidget):
                     self.drag_index = i
 
         self.session_points[self.image_name] = self.points  # update session
+        if self.points:     # if we actually have points update _actual session
+            self.session_points_actual[self.image_name],\
+                self.session_lengths_actual[self.image_name] = self.convertRelativePoints()
         self.session_lengths[self.image_name] = self.length_coords
         self.update()
 
@@ -91,6 +97,7 @@ class Canvas(QtWidgets.QWidget):
         else:
             self.points = []
             self.session_points[image_path] = []
+            self.session_points_actual[image_path] = []
 
         self.image_name = image_path
         unscaled_pix = QtGui.QPixmap(image_path)
@@ -150,11 +157,27 @@ class Canvas(QtWidgets.QWidget):
             pickle.dump(self.session_points, swapfile)
 
     def exportLandmarks(self, filepath):
-        if filepath is not None or filepath != '':
+        if filepath is not None and filepath != '':
             with open(filepath, mode='w+') as csv_file:
                 writer = csv.writer(csv_file, delimiter=',')
-                for point in self.convertRelativePoints():
+                points_og,_ = self.convertRelativePoints()
+                writer.writerow("wing length: " + str(self.wing_length))
+
+                for point in points_og:
                     writer.writerow([point.x(), point.y()])
+
+    def exportAll(self, dirpath):
+        for entry in self.session_points_actual:
+            filename = entry + ".csv"
+            filepath = os.path.join(dirpath, filename)
+            with open(filepath, mode='w+') as csv_file:
+                writer = csv.writer(csv_file, delimiter=',')
+                points_og = self.session_points_actual[entry]
+                length_og = self.session_lengths_actual[entry]
+                csv_file.write("wing length: " + str(length_og) + "\n")
+                for point in points_og:
+                    writer.writerow([point.x(), point.y()])
+
 
     # def saveMarkedImage(self):
     #     """repaints the image with the landmark/length points in its
@@ -174,13 +197,18 @@ class Canvas(QtWidgets.QWidget):
 
     def convertRelativePoints(self):
         points_og = []
+        length_og = 0
         x_factor = self.img_width / self.pixmap.width()
         y_factor = self.img_height / self.pixmap.height()
         for point in self.points:
             x_og = point.x() * x_factor
             y_og = point.y() * y_factor
             points_og.append(QtCore.QPoint(x_og, y_og))
-        return points_og
+        self.wing_length = int(math.hypot(
+            (self.length_coords[0].x() - self.length_coords[1].x()) * x_factor,
+            (self.length_coords[0].y() - self.length_coords[1].y()) * y_factor))
+        length_og = self.wing_length
+        return points_og, length_og
 
 
     def mouseMoveEvent(self, event):
@@ -199,10 +227,13 @@ class Canvas(QtWidgets.QWidget):
             self.points[self.drag_index] = event.pos()
             self.drag_index = -1    # indicate we arent dragging anymore
             self.session_points[self.image_name] = self.points  # update session
+            self.session_points_actual[self.image_name],_ = self.convertRelativePoints()
             self.update()
         if self.mode == 0 and self.length_drag_index >= 0:
             self.end = event.pos()
             self.length_coords[self.length_drag_index] = event.pos()
             self.length_drag_index = -1
             self.session_lengths[self.image_name] = self.length_coords
+            _,self.wing_length = self.convertRelativePoints()
+            self.session_lengths_actual[self.image_name] = self.wing_length
             self.update()

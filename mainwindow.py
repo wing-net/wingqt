@@ -152,14 +152,14 @@ class Ui_MainWindow():
         self.erase_button.setAutoRaise(True)
         self.erase_button.setObjectName("erase_button")
 
-        # setup erase button
+        # setup length button
         self.length_button = QtWidgets.QToolButton(self.action_bar)
         self.length_button.setGeometry(QtCore.QRect(1,380, 48, 60))
         self.length_button.setAutoFillBackground(False)
         self.length_button.setStyleSheet("color:white")
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("resources/erase.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.length_button.setIcon(icon5)
+        icon6.addPixmap(QtGui.QPixmap("resources/length.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.length_button.setIcon(icon6)
         self.length_button.setIconSize(QtCore.QSize(32, 32))
         self.length_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.length_button.setAutoRaise(True)
@@ -228,28 +228,13 @@ class Ui_MainWindow():
         MainWindow.setStatusBar(self.statusbar)
         self.actionOpen_File = QtWidgets.QAction(MainWindow)
         self.actionOpen_File.setObjectName("actionOpen_File")
-        self.actionOpen_Folder = QtWidgets.QAction(MainWindow)
-        self.actionOpen_Folder.setObjectName("actionOpen_Folder")
-        self.actionExport = QtWidgets.QAction(MainWindow)
-        self.actionExport.setObjectName("actionExport")
         self.actionExport_As = QtWidgets.QAction(MainWindow)
         self.actionExport_As.setObjectName("actionExport_As")
         self.actionExport_All = QtWidgets.QAction(MainWindow)
         self.actionExport_All.setObjectName("actionExport_All")
-        self.actionClose = QtWidgets.QAction(MainWindow)
-        self.actionClose.setObjectName("actionClose")
-        self.actionClose_All = QtWidgets.QAction(MainWindow)
-        self.actionClose_All.setObjectName("actionClose_All")
-        self.actionExit = QtWidgets.QAction(MainWindow)
-        self.actionExit.setObjectName("actionExit")
         self.menuFile.addAction(self.actionOpen_File)
-        self.menuFile.addAction(self.actionOpen_Folder)
-        self.menuFile.addAction(self.actionExport)
         self.menuFile.addAction(self.actionExport_As)
         self.menuFile.addAction(self.actionExport_All)
-        self.menuFile.addAction(self.actionClose)
-        self.menuFile.addAction(self.actionClose_All)
-        self.menuFile.addAction(self.actionExit)
         self.menuFile.addSeparator()
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
@@ -273,13 +258,13 @@ class Ui_MainWindow():
         self.menuAnalyze.setTitle(_translate("MainWindow", "Analyze"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
         self.actionOpen_File.setText(_translate("MainWindow", "Open File..."))
-        self.actionOpen_Folder.setText(_translate("MainWindow", "Open Folder..."))
-        self.actionExport.setText(_translate("MainWindow", "Export"))
         self.actionExport_As.setText(_translate("MainWindow", "Export As..."))
         self.actionExport_All.setText(_translate("MainWindow", "Export All"))
-        self.actionClose.setText(_translate("MainWindow", "Close"))
-        self.actionClose_All.setText(_translate("MainWindow", "Close All"))
-        self.actionExit.setText(_translate("MainWindow", "Exit"))
+
+        # connect event handlers to menu bar buttons
+        self.actionOpen_File.triggered.connect(self.open_clicked)
+        self.actionExport_As.triggered.connect(self.export_clicked)
+        self.actionExport_All.triggered.connect(self.export_clicked)
 
         # connect event handlers to action bar buttons
         self.open_button.clicked.connect(self.open_clicked)
@@ -298,7 +283,7 @@ class Ui_MainWindow():
 
     # on open button click
     def open_clicked(self):
-        self.statusbar.showMessage("opening..")
+        self.statusbar.showMessage("opening...")
         self.current_file = self.open_file_picker()
         self.current_dir = str(Path(self.current_file).parent)
 
@@ -323,11 +308,16 @@ class Ui_MainWindow():
             self.image_view.exportLandmarks(filename)
             self.update_statusbar()
 
+    def export_all_clicked(self):
+        if self.current_file != "":
+            self.statusbar.showMessage("exporting...")
+            self.image_view.exportAll(self.current_dir)
+            self.update_statusbar()
+
     def change_button_state(self):
         checked_style = "color:white;background-color:#5e3b63"
         unchecked_style = "color:white;background-color:#5e3b63"
         if self.edit_state == self.STATE_NORMAL:
-
             self.move_button.setStyleSheet("color:white;background-color:#5e3b63")
             self.add_button.setStyleSheet("color:white;background-color:#353537")
             self.erase_button.setStyleSheet("color:white;background-color:#353537")
@@ -372,12 +362,16 @@ class Ui_MainWindow():
             self.show_length_ctrl = True
             self.image_view.setLength()
             self.length_button.setStyleSheet("color:white;background-color:#5e3b63")
+            self.move_button.setStyleSheet("color:white;background-color:#353537")
+            self.add_button.setStyleSheet("color:white;background-color:#353537")
+            self.erase_button.setStyleSheet("color:white;background-color:#353537")
         else:
             self.show_length_ctrl = False
             self.image_view.setNormal()
             self.edit_state = self.STATE_NORMAL
             self.change_button_state()
             self.length_button.setStyleSheet("color:white;background-color:#353537")
+        self.update_statusbar()
 
     def file_list_clicked(self, item):
         self.current_file = os.path.join(self.current_dir, item.text())
@@ -390,8 +384,14 @@ class Ui_MainWindow():
         self.image_view.setImage(self.current_file)
 
     def update_statusbar(self):
+        if self.show_length_ctrl == True:
+            lenstr = "Drag points to measure length, click length button again to save"
+        elif len(self.current_file) > 1:
+            lenstr = "wing length: " + str(self.image_view.wing_length) + "px"
+        else:
+            lenstr = ""
         _, filename = os.path.split(self.current_file)
-        msgstr = " [" + self.state_dict[self.edit_state] + "]    " + filename
+        msgstr = " [" + self.state_dict[self.edit_state] + "]    " + filename + "    " + lenstr
         self.statusbar.showMessage(msgstr)
 
     def open_file_picker(self):
