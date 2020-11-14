@@ -1,4 +1,6 @@
 import os
+
+import process_image
 from pointFinder import findContour, findSmallContours
 from process_image import conv_blkwht, resize, thresh_img, fill_img, split
 import cv2
@@ -9,8 +11,8 @@ def main():
     image_dir = os.listdir(path)
     for img in image_dir:
         original = cv2.imread(f'{path}/{img}')
-        print(img)
         print('----------')
+        print(img)
        # print("Original: " + str(original.dtype))
         edged = thresh_img(original)
        #print("edged: " + str(edged.dtype))
@@ -20,8 +22,17 @@ def main():
         bin_img = cv2.imread('./temp2.JPG')
         bin_img = thresh_img(bin_img)
         #print("bin_img: " + str(bin_img.dtype))
-        findContour(original, bin_img, edged)
-        print('\n')
+        start,end,original = findContour(original, bin_img, edged)
+        print(start)
+        print(type(start))
+        print(end)
+        print(type(end))
+        #findContour(original, bin_img, edged)
+        cv2.circle(original, start, 8, (0, 255, 0), -1)
+        cv2.circle(original, end, 8, (0, 255, 0), -1)
+        process_image.resize(original)
+        # cv2.imshow("Image", orig)
+        cv2.waitKey(0)
 
 
 
