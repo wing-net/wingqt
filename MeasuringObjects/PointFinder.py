@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import pprint
 import cv2
 import imutils
-from MeasuringObjects.OrientationFinder import orientation
-from MeasuringObjects.OrientationFinder import dist
+from OrientationFinder import orientation
+from OrientationFinder import dist
 
 
 def findContour(image, bin_image, edged):
@@ -18,14 +18,12 @@ def findContour(image, bin_image, edged):
 
     cnts = imutils.grab_contours(cnts)
     orig = image.copy()
-
     # loop over the contours individually
     for c in cnts:
 
         # if the contour is not sufficiently large, ignore it
         if cv2.contourArea(c) < 70000:
             continue
-
         # polygon Bounds
         c_0 = c
         hull = cv2.convexHull(c_0)
@@ -74,25 +72,24 @@ def findContour(image, bin_image, edged):
 
 
 def findRightMostContour(cnts, orig, tip):
-    return 0, 0
-    # print(orig.shape)
-    # # shape will give you [height, width, channel]
-    # h, w = orig.shape[ 0:2 ]
-    # # get the bottom right pixel
-    # minPoint = (h, w)
-    #
-    # print("minPoint = " + str(minPoint))
-    # min = dist(tip, minPoint)
-    #
-    # for c in cnts:
-    #     for points in c:
-    #         for point in points:
-    #
-    #             d = dist(tip, point)
-    #             if (min > d):
-    #                 minPoint = point
-    #                 min = d
-    # return minPoint[ 0 ], minPoint[ 1 ]
+    print(orig.shape)
+    # shape will give you [height, width, channel]
+    h, w = orig.shape[ 0:2 ]
+    # get the bottom right pixel
+    minPoint = (0, h/2)
+
+    #print("minPoint = " + str(minPoint))
+    min = dist(tip, minPoint)
+
+    for c in cnts:
+        for points in c:
+            for point in points:
+
+                d = dist(tip, point)
+                if (min > d):
+                    minPoint = point
+                    min = d
+    return minPoint[ 0 ], minPoint[ 1 ]
 
 
 def findLeftMostContour(cnts, orig, tip):
@@ -107,7 +104,6 @@ def findLeftMostContour(cnts, orig, tip):
 
     for c in cnts:
         for points in c:
-            #print(len(c))
             for point in points:
                 d = dist(tip, point)
                 if(min > d):
