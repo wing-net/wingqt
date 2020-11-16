@@ -135,6 +135,9 @@ class Canvas(QtWidgets.QWidget):
         y_factor = self.img_height / self.pixmap.height()
         self.length_coords.append(QtCore.QPoint(start[0] / x_factor  , start[1] / y_factor))
         self.length_coords.append(QtCore.QPoint(end[0] / x_factor, end[1] / y_factor))
+        self.session_lengths[self.image_name] = self.length_coords
+        _,self.wing_length = self.convertRelativePoints()
+        self.session_lengths_actual[self.image_name] = self.wing_length
         self.update()
 
     def setLength(self):

@@ -334,8 +334,10 @@ class Ui_MainWindow():
 
     # on detect button click
     def detect_clicked(self):
+        QtWidgets.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+        self.statusbar.showMessage("analyzing image... please wait",10000)
         self.image_view.analyzeLength()
-        self.statusbar.showMessage("detect")
+        QtWidgets.QApplication.restoreOverrideCursor()
         self.update_statusbar()
 
     # on move button click
