@@ -47,12 +47,15 @@ def orientation(h_len, v_len, hull, orig):
         distAvg2 = distanceToTip(tip2) / (len(tip2))
 
         if distAvg1 < distAvg2:
+            print('Wing tip is on the left side')
             return 'left'
-            # print('Wing tip is on the left side')
+
         else:
+            print('wing tip is on the right side')
             return 'right'
-            # print('wing tip is on the right side')
+
     else:
         # This is where the implementation for top or bottom tip facing wings goes
+        print("something went wrong")
         return 'top'
 

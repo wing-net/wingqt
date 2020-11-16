@@ -74,25 +74,24 @@ def findContour(image, bin_image, edged):
 
 
 def findRightMostContour(cnts, orig, tip):
-    return 0, 0
-    # print(orig.shape)
-    # # shape will give you [height, width, channel]
-    # h, w = orig.shape[ 0:2 ]
-    # # get the bottom right pixel
-    # minPoint = (h, w)
-    #
-    # print("minPoint = " + str(minPoint))
-    # min = dist(tip, minPoint)
-    #
-    # for c in cnts:
-    #     for points in c:
-    #         for point in points:
-    #
-    #             d = dist(tip, point)
-    #             if (min > d):
-    #                 minPoint = point
-    #                 min = d
-    # return minPoint[ 0 ], minPoint[ 1 ]
+    print(orig.shape)
+    # shape will give you [height, width, channel]
+    h, w = orig.shape[ 0:2 ]
+    # get the bottom right pixel
+    minPoint = (0, h/2)
+
+    #print("minPoint = " + str(minPoint))
+    min = dist(tip, minPoint)
+
+    for c in cnts:
+        for points in c:
+            for point in points:
+
+                d = dist(tip, point)
+                if (min > d):
+                    minPoint = point
+                    min = d
+    return minPoint[ 0 ], minPoint[ 1 ]
 
 
 def findLeftMostContour(cnts, orig, tip):
@@ -107,7 +106,6 @@ def findLeftMostContour(cnts, orig, tip):
 
     for c in cnts:
         for points in c:
-            #print(len(c))
             for point in points:
                 d = dist(tip, point)
                 if(min > d):
