@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import pprint
 import cv2
 import imutils
-from OrientationFinder import orientation
-from OrientationFinder import dist
+from MeasuringObjects.OrientationFinder import orientation
+from MeasuringObjects.OrientationFinder import dist
 
 
 def findContour(image, bin_image, edged):
