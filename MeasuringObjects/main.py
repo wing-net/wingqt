@@ -1,5 +1,5 @@
-from process_image import conv_blkwht, resize, thresh_img, fill_img, split
-from PointFinder import findContour
+from MeasuringObjects.process_image import conv_blkwht, resize, thresh_img, fill_img, split
+from MeasuringObjects.PointFinder import findContour
 import cv2
 import argparse
 
@@ -33,7 +33,16 @@ def main():
     resize(original)
     cv2.waitKey(0)
 
-
+def analyze(path):
+    original = cv2.imread(path)
+    edged = thresh_img(original)
+    flooded = fill_img(edged)
+    cv2.imwrite('temp2.JPG', conv_blkwht(flooded))
+    bin_img = cv2.imread('./temp2.JPG')
+    bin_img = thresh_img(bin_img)
+    start, end, _ =  findContour(original, bin_img, edged)
+    print(start, end)
+    return (start, end)
 
 if __name__ == "__main__":
     main()
