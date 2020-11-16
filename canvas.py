@@ -7,6 +7,7 @@ import csv
 import math
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtGui import QPainter
+import MeasuringObjects.main as analyzer
 
 class Canvas(QtWidgets.QWidget):
 
@@ -126,6 +127,15 @@ class Canvas(QtWidgets.QWidget):
         self.length_coords.append(QtCore.QPoint(x1,y))
         self.length_coords.append(QtCore.QPoint(x2,y))
         self.wing_length = int(math.hypot(x2 - x1, y - y))
+
+    def analyzeLength(self):
+        self.length_coords = []
+        start, end = analyzer.analyze(self.image_name)
+        x_factor = self.img_width / self.pixmap.width()
+        y_factor = self.img_height / self.pixmap.height()
+        self.length_coords.append(QtCore.QPoint(start[0] / x_factor  , start[1] / y_factor))
+        self.length_coords.append(QtCore.QPoint(end[0] / x_factor, end[1] / y_factor))
+        self.update()
 
     def setLength(self):
         self.mode = 0

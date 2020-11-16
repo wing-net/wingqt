@@ -158,7 +158,7 @@ class Ui_MainWindow():
         self.length_button.setAutoFillBackground(False)
         self.length_button.setStyleSheet("color:white")
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("resources/length.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap("resources/ruler.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.length_button.setIcon(icon6)
         self.length_button.setIconSize(QtCore.QSize(32, 32))
         self.length_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
@@ -334,6 +334,7 @@ class Ui_MainWindow():
 
     # on detect button click
     def detect_clicked(self):
+        self.image_view.analyzeLength()
         self.statusbar.showMessage("detect")
         self.update_statusbar()
 

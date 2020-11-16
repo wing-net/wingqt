@@ -42,7 +42,7 @@ def conv_blkwht(flooded):
     _, edged_flooded = cv2.threshold(flooded, a/2, a, cv2.THRESH_BINARY_INV)
     return edged_flooded
 
-
+# I don't think I need this.
 def fill_img(edged):
     im_floodfill = edged.copy()
     h, w = im_floodfill.shape[:2]
@@ -76,7 +76,7 @@ def resize(img):
     dim = (width, height)
     # resize image
     resized = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
-    print('Resized Dimensions : ', resized.shape)
+   # print('Resized Dimensions : ', resized.shape)
 
     cv2.imshow("Resized image", resized)
 
