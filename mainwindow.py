@@ -287,6 +287,9 @@ class Ui_MainWindow():
         self.current_file = self.open_file_picker()
         self.current_dir = str(Path(self.current_file).parent)
 
+        if self.current_file is not None and self.current_file != "":
+            self.file_list_view.clear()
+
         imagefilter = [".png", ".jpg", ".bmp", ".gif"]
 
         dir_contents = os.listdir(self.current_dir)
@@ -295,7 +298,6 @@ class Ui_MainWindow():
             _, ext = os.path.splitext(imagefile)
             if ext.lower() in imagefilter:
                 self.file_list_view.addItem(imagefile)
-
         self.update_image()
         self.update_statusbar()
 
