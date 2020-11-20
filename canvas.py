@@ -174,14 +174,15 @@ class Canvas(QtWidgets.QWidget):
             with open(filepath, mode='w+') as csv_file:
                 writer = csv.writer(csv_file, delimiter=',')
                 points_og,_ = self.convertRelativePoints()
-                writer.writerow("wing length: " + str(self.wing_length))
-
+                length_og = self.session_lengths_actual[self.image_name]
+                csv_file.write("wing length: " + str(length_og) + "\n")
                 for point in points_og:
                     writer.writerow([point.x(), point.y()])
 
     def exportAll(self, dirpath):
         for entry in self.session_points_actual:
-            filename = entry + ".csv"
+            filename, _ = os.path.splitext(entry)
+            filename = filename + ".csv"
             filepath = os.path.join(dirpath, filename)
             with open(filepath, mode='w+') as csv_file:
                 writer = csv.writer(csv_file, delimiter=',')

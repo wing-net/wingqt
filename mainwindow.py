@@ -264,7 +264,7 @@ class Ui_MainWindow():
         # connect event handlers to menu bar buttons
         self.actionOpen_File.triggered.connect(self.open_clicked)
         self.actionExport_As.triggered.connect(self.export_clicked)
-        self.actionExport_All.triggered.connect(self.export_clicked)
+        self.actionExport_All.triggered.connect(self.export_all_clicked)
 
         # connect event handlers to action bar buttons
         self.open_button.clicked.connect(self.open_clicked)
