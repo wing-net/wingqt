@@ -306,7 +306,6 @@ class Ui_MainWindow():
         if self.current_file != "":
             self.statusbar.showMessage("exporting...")
             filename = self.save_file_picker()
-            print(filename)
             self.image_view.exportLandmarks(filename)
             self.update_statusbar()
 
