@@ -1,9 +1,7 @@
-from MeasuringObjects.process_image import conv_blkwht, resize, thresh_img, fill_img, split
+from MeasuringObjects.process_image import conv_blkwht, resize, thresh_img, thresh_img_2, fill_img, split
 from MeasuringObjects.PointFinder import findContour
 import cv2
 import argparse
-
-
 
 def main():
     # construct the argument parse and parse the arguments
@@ -16,12 +14,13 @@ def main():
     # print('----------')
     # print(args["image"])
 
-    edged = thresh_img(original)
-    flooded = fill_img(edged)
-    cv2.imwrite('temp2.JPG', conv_blkwht(flooded))
-    bin_img = cv2.imread('./temp2.JPG')
-    bin_img = thresh_img(bin_img)
-    start, end, original = findContour(original, bin_img, edged)
+    # Will find the overall shape of the wing
+    edged = thresh_img_2(original)
+    #edged = thresh_img(original)
+    #cv2.imshow("edged", edged)
+
+    threshed = thresh_img(original)
+    start, end, original = findContour(original, edged, threshed)
     # print(start)
     # print(type(start))
     # print(end)
@@ -30,8 +29,20 @@ def main():
     cv2.circle(original, start, 8, (0, 255, 0), -1)
     cv2.circle(original, end, 8, (0, 255, 0), -1)
     print(start, end)
-    resize(original)
-    cv2.waitKey(0)
+    #resize(original)
+    #cv2.waitKey(0)
+
+# Gets a better shape around the wing
+def analyzeWithCanny(path):
+    original = cv2.imread(path)
+    # Will find the overall shape of the wing
+    edged = thresh_img_2(original)
+    # cv2.imshow("edged", edged)
+
+    threshed = thresh_img(original)
+    start, end, original = findContour(original, edged, threshed)
+    print(start, end)
+    return (start, end)
 
 def analyze(path):
     original = cv2.imread(path)
@@ -40,7 +51,7 @@ def analyze(path):
     cv2.imwrite('temp2.JPG', conv_blkwht(flooded))
     bin_img = cv2.imread('./temp2.JPG')
     bin_img = thresh_img(bin_img)
-    start, end, _ =  findContour(original, bin_img, edged)
+    start, end, _ = findContour(original, bin_img, edged)
     print(start, end)
     return (start, end)
 

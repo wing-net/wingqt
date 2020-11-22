@@ -41,18 +41,29 @@ def orientation(h_len, v_len, hull, orig):
         tip1, tip2 = divideWing(hull)
 
         # Finds the distance between corner points in the polygon
-        # A close average distance would mean the ploygon is curving
+        # A close average distance would mean the polygon is curving
         # Which is indicitive of a the tip of the wing
         distAvg1 = distanceToTip(tip1) / (len(tip1))
         distAvg2 = distanceToTip(tip2) / (len(tip2))
 
         if distAvg1 < distAvg2:
+            print('Wing tip is on the left side')
             return 'left'
-            # print('Wing tip is on the left side')
         else:
+            print('wing tip is on the right side')
             return 'right'
-            # print('wing tip is on the right side')
     else:
-        # This is where the implementation for top or bottom tip facing wings goes
-        return 'top'
+        tip1, tip2 = divideWing(hull)
+
+        # Finds the distance between corner points in the polygon
+        # A close average distance would mean the polygon is curving
+        # Which is indicitive of a the tip of the wing
+        distAvg1 = distanceToTip(tip1) / (len(tip1))
+        distAvg2 = distanceToTip(tip2) / (len(tip2))
+        if distAvg1 < distAvg2:
+            print('Wing tip is on the top')
+            return'top'
+        else:
+            print('Wing tip is on the bottom')
+            return 'bottom'
 
