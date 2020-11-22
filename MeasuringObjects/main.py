@@ -47,11 +47,7 @@ def analyzeWithCanny(path):
 def analyze(path):
     original = cv2.imread(path)
     edged = thresh_img(original)
-    flooded = fill_img(edged)
-    cv2.imwrite('temp2.JPG', conv_blkwht(flooded))
-    bin_img = cv2.imread('./temp2.JPG')
-    bin_img = thresh_img(bin_img)
-    start, end, _ = findContour(original, bin_img, edged)
+    start, end, _ = findContour(original, edged)
     print(start, end)
     return (start, end)
 

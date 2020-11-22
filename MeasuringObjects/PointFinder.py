@@ -8,7 +8,8 @@ from MeasuringObjects.OrientationFinder import orientation
 from MeasuringObjects.OrientationFinder import dist
 
 
-def findContour(image, edged, threshed):
+#def findContour(image, edged, threshed):
+def findContour(image, edged):
     startpoint = (0,0)
     endpoint = (0,0)
     ornt = 'left'
@@ -69,7 +70,7 @@ def findContour(image, edged, threshed):
             startpoint = extTop
             tip = extBot
 
-        startpoint, endpoint, orig = findSmallContours(orig, threshed, mask, startpoint, ornt, tip)
+        startpoint, endpoint, orig = findSmallContours(orig, edged, mask, startpoint, ornt, tip)
 
         print("Start: " + str(startpoint))
         print("end: " + str(endpoint))
