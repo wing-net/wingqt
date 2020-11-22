@@ -17,6 +17,20 @@ def split(img):
     # sBL = cv2.imshow('BLeft half', tiles[ 3 ])
     return tiles
 
+def thresh_img_2(img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray = cv2.GaussianBlur(gray, (7, 7), 0)
+    # perform edge detection, then perform a dilation + erosion to
+    # close gaps in between object edges
+
+    edged = cv2.Canny(gray, 40, 20)
+    edged = cv2.dilate(edged, None, iterations=4)
+
+    #edged = cv2.Canny(gray, 20, 20)
+    #edged = cv2.dilate(edged, None, iterations=3)
+
+    edged = cv2.erode(edged, None, iterations=1)
+    return edged
 
 def thresh_img(img):
     # Blurs the image

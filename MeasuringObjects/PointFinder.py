@@ -8,29 +8,32 @@ from MeasuringObjects.OrientationFinder import orientation
 from MeasuringObjects.OrientationFinder import dist
 
 
-def findContour(image, bin_image, edged):
+def findContour(image, edged, threshed):
     startpoint = (0,0)
     endpoint = (0,0)
     ornt = 'left'
     mask = []
     # find contours in the edge map
-    cnts = cv2.findContours(bin_image.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     cnts = imutils.grab_contours(cnts)
     orig = image.copy()
     # loop over the contours individually
+    counter = 0
     for c in cnts:
 
         # if the contour is not sufficiently large, ignore it
         if cv2.contourArea(c) < 70000:
             continue
+        counter+=1
         # polygon Bounds
-        c_0 = c
-        hull = cv2.convexHull(c_0)
+        # Hull is the polygon contour
+        hull = cv2.convexHull(c)
         mask.append(hull)
 
         # Draw a Polygon??
-        cv2.drawContours(orig, contours=[ hull ], contourIdx=0, color=(255, 0, 0), thickness=2)
+        cv2.drawContours(orig, contours=[hull], contourIdx=0, color=(255, 0, 0), thickness=2)
+        cv2.drawContours(orig, contours=[ c ], contourIdx=0, color=(255, 0, 0), thickness=2)
         cMax = hull
         extLeft = tuple(cMax[ cMax[ :, :, 0 ].argmin() ][ 0 ])
         extRight = tuple(cMax[ cMax[ :, :, 0 ].argmax() ][ 0 ])
@@ -59,16 +62,20 @@ def findContour(image, bin_image, edged):
         elif(ornt == 'right'):
             startpoint = extLeft
             tip = extRight
-        # elif(ornt == 'top'):
-        # # ornt == 'bottom'
-        # else:
+        elif(ornt == 'top'):
+            startpoint = extBot
+            tip = extTop
+        else:
+            startpoint = extTop
+            tip = extBot
 
-        start, end, orig = findSmallContours(orig, edged, mask, startpoint, ornt, tip)
+        startpoint, endpoint, orig = findSmallContours(orig, threshed, mask, startpoint, ornt, tip)
 
-       # print("Start: " + str(start))
-       # print("end: " + str(end))
+        print("Start: " + str(startpoint))
+        print("end: " + str(endpoint))
+    print(counter)
 
-    return start, end, orig
+    return startpoint, endpoint, orig
 
 
 def findRightMostContour(cnts, orig, tip):
@@ -118,15 +125,19 @@ def findSmallContours(image, edged, mask, startpoint, ornt, tip):
 
     cnts = cv2.findContours(inverted.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
-
+    if len(cnts) == 0:
+        return None, None, None
     bounded = []
 
 # Filters contours out so that only nicely sized contours within the outer contour are counted.
     for c in cnts:
         if cv2.contourArea(c) < 400:
+
+            #cv2.imshow('small', image)
             continue
         if cv2.contourArea(c) > 70000:
             continue
+        cv2.drawContours(image, [ c ], -1, (0, 255, 255), 2)
         for points in c:
             for x,y in points:
                 for m in mask:
@@ -136,6 +147,7 @@ def findSmallContours(image, edged, mask, startpoint, ornt, tip):
     print("Total bounded: " + str(len(bounded)))
 
     cnts = bounded
+
     orig = image.copy()
 
     # If the program is unable to find contours within the bounding contour,
@@ -149,10 +161,12 @@ def findSmallContours(image, edged, mask, startpoint, ornt, tip):
     elif ornt == 'right':
         c = cnts[len(cnts) - 1]
         return startpoint, findRightMostContour(cnts, orig, tip), orig
-    # elif ornt == 'top':
-    # # implementation for top goes here
-    # else:
-    # # implementation for bottom goes here
+    elif ornt == 'top':
+        c = cnts[0]
+        return startpoint, findLeftMostContour(cnts,orig,tip), orig
+    else:
+        c = cnts[len(cnts) - 1]
+        return startpoint, findRightMostContour(cnts, orig, tip), orig
 
     # #----------- Unsure if I need this yet
     # #for c in cnts:
