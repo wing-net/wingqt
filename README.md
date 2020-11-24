@@ -38,12 +38,11 @@ $ python wingqt.py
  - [x] add session saving for open image files
  - [x] add swap files for session recovery
  - [x] give menu bar actual functionality 
- - [ ] add keybindings for switching modes etc 
  - [x] add draggable box/line to mark/display length
- - [ ] hook up detection schemes to automatically mark length, points
+ - [x] hook up detection schemes to automatically mark length, points
  - [x] improve UI (pressed appearance on buttons, etc)
  - [x] add detect-all, export-all
- - [ ] change resource loading and other relative path stuff (file picker defaults)
+ - [x] change resource loading and other relative path stuff (file picker defaults)
  - [ ] launcher scripts for macos/win/linux
  - [ ] docs
 
