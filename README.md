@@ -8,18 +8,22 @@ wingqt is built with python and the Qt toolkit.
 
 - python3
 - pyqt5
+- opencv-python, imutils
 
 ### Running wingqt:
 ```
-~/ $ git clone https://github.com/wing-net/wingqt.git && cd wingqt
+$ git clone https://github.com/wing-net/wingqt.git && cd wingqt
 
-wingqt/ $ python --version
+$ python --version    # _if python points to python2 for you, use python3 and pip3_
 Python 3.8.6
 
-wingqt/ $ pip install pyqt5
+$ pip install numpy==1.19.3    # _important to specify this version if using windows_
 ...
 
-wingqt/ $ python wingqt.py
+$ pip install pyqt5 opencv-python imutils
+...
+
+$ python wingqt.py
 
 ```
 
