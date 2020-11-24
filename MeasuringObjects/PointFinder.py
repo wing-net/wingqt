@@ -1,6 +1,5 @@
 # import the necessary packages
 import math
-import matplotlib.pyplot as plt
 import pprint
 import cv2
 import imutils

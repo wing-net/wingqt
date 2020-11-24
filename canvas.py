@@ -93,14 +93,15 @@ class Canvas(QtWidgets.QWidget):
 
     def setImage(self, image_path):
         # add if we already know about the image load it into current points, else create it
-        if image_path in self.session_points:
-            self.points = self.session_points[image_path]
+        image_name = os.path.basename(image_path)
+        if image_name in self.session_points:
+            self.points = self.session_points[image_name]
         else:
             self.points = []
-            self.session_points[image_path] = []
-            self.session_points_actual[image_path] = []
+            self.session_points[image_name] = []
+            self.session_points_actual[image_name] = []
 
-        self.image_name = image_path
+        self.image_name = image_name
         unscaled_pix = QtGui.QPixmap(image_path)
         self.img_width = unscaled_pix.width()
         self.img_height = unscaled_pix.height()
@@ -171,7 +172,7 @@ class Canvas(QtWidgets.QWidget):
 
     def exportLandmarks(self, filepath):
         if filepath is not None and filepath != '':
-            with open(filepath, mode='w+') as csv_file:
+            with open(filepath, mode='w+', newline='') as csv_file:
                 writer = csv.writer(csv_file, delimiter=',')
                 points_og,_ = self.convertRelativePoints()
                 length_og = self.session_lengths_actual[self.image_name]
@@ -184,7 +185,7 @@ class Canvas(QtWidgets.QWidget):
             filename, _ = os.path.splitext(entry)
             filename = filename + ".csv"
             filepath = os.path.join(dirpath, filename)
-            with open(filepath, mode='w+') as csv_file:
+            with open(filepath, mode='w+', newline='') as csv_file:
                 writer = csv.writer(csv_file, delimiter=',')
                 points_og = self.session_points_actual[entry]
                 length_og = self.session_lengths_actual[entry]
