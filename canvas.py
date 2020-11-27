@@ -34,6 +34,7 @@ class Canvas(QtWidgets.QWidget):
         self.pen_size = 15
 
         self.image_name = ""
+        self.image_path = ""
         self.img_width = 0
         self.img_height = 0
         self.pixmap = QtGui.QPixmap()
@@ -102,6 +103,7 @@ class Canvas(QtWidgets.QWidget):
             self.session_points_actual[image_name] = []
 
         self.image_name = image_name
+        self.image_path = image_path
         unscaled_pix = QtGui.QPixmap(image_path)
         self.img_width = unscaled_pix.width()
         self.img_height = unscaled_pix.height()
@@ -131,7 +133,7 @@ class Canvas(QtWidgets.QWidget):
 
     def analyzeLength(self):
         self.length_coords = []
-        start, end = analyzer.analyze(self.image_name)
+        start, end = analyzer.analyze(self.image_path)
         x_factor = self.img_width / self.pixmap.width()
         y_factor = self.img_height / self.pixmap.height()
         self.length_coords.append(QtCore.QPoint(start[0] / x_factor  , start[1] / y_factor))
