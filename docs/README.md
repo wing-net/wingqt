@@ -1,6 +1,6 @@
 # Welcome to the [wingqt](https://github.com/wing-net/wingqt) documentation!
 
-This page serves to document the software and its uses, as well as helping troubleshoot or answer frequently asked questions.
+This page serves to document the software and its use, as well as helping troubleshoot or answer frequently asked questions.
 
 ## Contents
 * [About Wingqt](#about)
