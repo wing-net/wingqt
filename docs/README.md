@@ -10,12 +10,13 @@ This page serves to document the software and its uses, as well as helping troub
     * [Opening Images](#opening)
     * [Annotation Tools](#annotation)
     * [Exporting Data](#exporting)
+* [Taking Compatible Images](#images)
 * [Development](#development)
 * [Troubleshooting](#troubleshooting)
 
 
 ## <a id="about"></a>About Wingqt
-stuff
+<add project description here>
 
 
 ## <a id="installation"></a>Installation
@@ -50,24 +51,79 @@ With everything installed now, you should be able to run the program
 
 
 ## <a id="gettingstarted"></a>Getting Started
-stuff
+
+### <a id="Features"></a>Features
+
+The intended workflow for the program is annotating sets of mosquito wings in a folder with manual landmark annotation and automatic (or manual) length detection and exporting to individual comma-separated files for further use. The following features are in order of a typical use-case. Some additional "under-the-hood" features exist also, such as session state saving so that you can come back to previously annotated images in a set.
 
 ### <a id="opening"></a>Opening Images
-stuff
+
+First, to open a set of images, navigate to the containing folder and select any of the images. Every image in that set/folder will be loaded and you can navigate between then with the file list at the bottom.
+
 ![open](resources/open.gif)
 
 ### <a id="annotation"></a>Annotation Tools
-stuff
+
+Annotation tools can be selected from the action bar on the left, similar to common image manipulation programs like photoshop and GIMP. Once a tool is selected it will appear highlighted on the action bar and you can use the tool on the current image in the main canvas.
+
+### Add Tool
+To add landmarks, select the add tool and click on the landmark on the image.
+
+![add](resources/add.gif)
+
+### Move Tool
+To move existing landmark points, select the move tool then click and drag a point to the desired location.
+
+![move](resources/move.gif)
+
+### Erase Tool
+Similarly, existing points can be erased by selecting the erase tool and clicking on the point to remove.
+
+![erase](resources/erase.gif)
+
+### Length Tool
+By default, the length dimension line is hidden, however this can be toggled on by selecting the length button in the action bar, clicking the length button again will hide the dimension line.
+
+![length](resources/length.gif)
+
+### Length Detection Tool
+To automatically detect the length of a wing, press the detect button on the action bar, this may take a second or two depending on the resolution of the image. The stored length, visible on the status bar and the dimension line will be updated.
+
+![detect](resources/detct.gif)
 
 ### <a id="exporting"></a>Exporting Data
-stuff
+Wingqt is able to export annotated length and landmark data in a plain-text, comma-separated format. Length and coordinates are in pixels relative to the original resolution of the image. The format looks like the following:
+
+```
+wing length: 896
+12,324
+233,22
+492,109
+292,582
+583,201
+288,902
+```
+
+You can either export data for a single images, or for every image in the current set.
+
+For exporting a single image's annotations, press the export button on the action bar and choose a name and location to save the CSV file in.
+
+![export](resources/export.gif)
+
+To export all images' annotations, press File -> Export-all located in the menu bar. This will create .csv files in the same directory as the image set, with corresponding filenames (IMG01.jpg will export to IMG01.csv)
+
+[exportall](resources/exportall.gif)
+
+
+### <a id="images"></a>Taking Compatible Images
+<add image guidelines here>
 
 
 ## <a id="development"></a>Development
-stuff
+<notes about implementations etc>
 
 
 ## <a id="troubleshooting"></a>Troubleshooting
-stuff
+<issues and possible solutions>
 
 
