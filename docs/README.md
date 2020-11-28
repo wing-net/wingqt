@@ -11,8 +11,7 @@ This page serves to document the software and its uses, as well as helping troub
     * [Annotation Tools](#annotation)
     * [Exporting Data](#exporting)
 * [Taking Compatible Images](#images)
-* [Development](#development)
-* [Troubleshooting](#troubleshooting)
+* [Development and Notes](#development)
 
 
 ## <a id="about"></a>About Wingqt
@@ -119,7 +118,7 @@ To export all images' annotations, press File -> Export-all located in the menu 
 <add image guidelines here>
 
 
-## <a id="development"></a>Development
+## <a id="development"></a>Development and Notes
 <notes about implementations etc>
 
 
