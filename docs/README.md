@@ -54,7 +54,7 @@ stuff
 
 ### <a id="opening"></a>Opening Images
 stuff
-[](resources/open.gif)
+![open](resources/open.gif)
 
 ### <a id="annotation"></a>Annotation Tools
 stuff
