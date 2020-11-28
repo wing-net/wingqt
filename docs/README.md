@@ -16,7 +16,7 @@ This page serves to document the software and its uses, as well as helping troub
 
 
 ## <a id="about"></a>About Wingqt
-<add project description here>
+Wingqt is a project developed by [Nathan Baney](https://github.com/nathanbaney/), [Monica Perez](https://github.com/mon2154256/), [Michael Li](https://github.com/saesus/), [Dekart Kosa](https://github.com/Dekart97/) and [Scott Foster](https://github.com/sgfost/) for the Paaijmans Lab at Arizona State University in the Fall of 2020. It was created for semi-automatic morphological analysis of mosquito wings. The software features both automatic and manual tools for annotation of landmarks and length measurement of wings, wrapped in a user friendly graphical interface.
 
 
 ## <a id="installation"></a>Installation
@@ -121,9 +121,5 @@ To export all images' annotations, press File -> Export-all located in the menu 
 
 ## <a id="development"></a>Development
 <notes about implementations etc>
-
-
-## <a id="troubleshooting"></a>Troubleshooting
-<issues and possible solutions>
 
 
