@@ -112,7 +112,7 @@ For exporting a single image's annotations, press the export button on the actio
 
 To export all images' annotations, press File -> Export-all located in the menu bar. This will create .csv files in the same directory as the image set, with corresponding filenames (IMG01.jpg will export to IMG01.csv)
 
-[exportall](resources/exportall.gif)
+![exportall](resources/exportall.gif)
 
 
 ### <a id="images"></a>Taking Compatible Images
