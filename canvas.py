@@ -190,7 +190,10 @@ class Canvas(QtWidgets.QWidget):
             with open(filepath, mode='w+', newline='') as csv_file:
                 writer = csv.writer(csv_file, delimiter=',')
                 points_og = self.session_points_actual[entry]
-                length_og = self.session_lengths_actual[entry]
+                try:
+                    length_og = self.session_lengths_actual[entry]
+                except:
+                    length_og = "NULL"
                 csv_file.write("wing length: " + str(length_og) + "\n")
                 for point in points_og:
                     writer.writerow([point.x(), point.y()])
