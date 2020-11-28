@@ -21,7 +21,7 @@ This page serves to document the software and its uses, as well as helping troub
 
 ## <a id="installation"></a>Installation
 
-The easiest way to get started with wingqt is to install an executable for your system found on the [releases paege](https://github.com/wing-net/wingqt/releases). Simply extract the archive and run the executable (`wingqt.exe` for windows, or `wingqt` for MacOS and linux). You can move the wignqt folder anywhere, but be sure to not remove the executable from this folder (it is recommened to make a shortcut for it).
+The easiest way to get started with wingqt is to install an executable for your system found on the [releases page](https://github.com/wing-net/wingqt/releases). Simply extract the archive and run the executable (`wingqt.exe` for windows, or `wingqt` for MacOS and linux). You can move the wignqt folder anywhere, but be sure to not remove the executable from this folder (it is recommened to make a shortcut for it).
 
 If you are concerned about running executables or would like to run it straight from the source, you can do so very easily since wingqt is written in 100% python. 
 
