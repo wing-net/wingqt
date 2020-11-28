@@ -115,7 +115,7 @@ To export all images' annotations, press File -> Export-all located in the menu 
 ![exportall](resources/exportall.gif)
 
 
-### <a id="images"></a>Taking Compatible Images
+## <a id="images"></a>Taking Compatible Images
 <add image guidelines here>
 
 
