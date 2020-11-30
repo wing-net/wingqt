@@ -152,6 +152,7 @@ To export all images' annotations, press File -> Export-all located in the menu 
 
 
 ## <a id="development"></a>Development and Notes
-<notes about implementations etc>
+
+Unfortunately, a high enough accuracy in landmark detection in order to be included in wingqt was not achieved. There was however, significant progress and effort made towards this goal and various documented ipython notebooks containing our work are available [here](https://drive.google.com/drive/folders/1OlxtS053Py5w2K76AmrcHM32NCYr8yI6?usp=sharing).
 
 
