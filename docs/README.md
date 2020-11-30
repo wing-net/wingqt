@@ -120,17 +120,34 @@ To export all images' annotations, press File -> Export-all located in the menu 
  * Lighting:
    * Having shadows is okay so long as they are not larger than the wing itself and preferrable away from the wing tip and start point.
                 It is difficult to find smaller contours in the wing when the veins and the area in between are similar in value so shadows within the in interior of the wing                   could be an issue if the veins are not extremely darker. Glare on the veins could cause the veins to get lost, but glare anywhere else is okay. 
+   
+ Ideal image for inner wing lighting
    ![lighting](resources/lighting.PNG)
+ Large shadows, too much glare
+   ![shadow](resources/shadows.PNG)
+   
  * Both wing tip and start are in the image:
    * An image without a wing tip will not be able to determine the orientation.
    * An image without a wing start will simply give an incorrect start point.
+   
+   
  * Nail plosh ring  is not present or is not large:
    * A nail polish ring can create shadows which can be counted as a contour if large enough.
+   
+  Large problematic shadow due to polish ring
+ ![ring](resources/polishRing.PNG)
+  Unproblematic polish ring
+ ![ring](resources/OKpolishRing.PNG)
+ 
  * Size of the image:
    * There are values in pointFinder.py used to filter out too big or too small contours. Having images that are of various sizes will require changes in said values. Having a consistant sized image will have better results.
  * Sharpness of an image:
    * In some of the images provided the rims of the wings were a bit blurry. 
       When an image is blurry it introduces more lighter tones of gray which when binarized are lost.
+      
+  Most ideal in terms of obtaining a binary image.
+  Currently unknown why inner contours are unable to be identified with this image.
+ ![sharp](resources/sharp.PNG)
    
 
 
