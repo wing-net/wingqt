@@ -116,6 +116,26 @@ To export all images' annotations, press File -> Export-all located in the menu 
 
 ## <a id="images"></a>Taking Compatible Images
 <add image guidelines here>
+ With the current implmentation there are a couple of things to consider when taking a decent picture:
+   <ul> 
+      <li> Lighting:<br>
+                Having shadows is okay so long as they are not larger than the wing itself and preferrable away from the wing tip and start point.
+                It is difficult to find smaller contours in the wing when the veins and the area in between are similar in value so shadows within the in interior of the wing                   could be an issue if the veins are not extremely darker. Glare on the veins could cause the veins to get lost, but glare anywhere else is okay. 
+      </li><br>    
+      <li> Both wing tip and start are in the image:<br>
+               An image without a wing tip will not be able to determine the orientation.<br>
+               An image without a wing start will simply give an incorrect start point.</li><br>
+      <li> Nail plosh ring  is not present or is not large:<br>
+               A nail polish ring can create shadows which can be counted as a contour if large enough.
+      </li><br>
+      <li> Size of the image: There are values in pointFinder.py used to filter out too big or too small contours.
+              Having images that are of various sizes will require changes in said values. Having a consistant sized image will have better results. </li><br>
+      <li> Sharpness of an image</li><br>
+      In some of the images provided the rims of the wings were a bit blurry. 
+      When an image is blurry it introduces more lighter tones of gray which when binarized are lost.</li>
+   
+   </ul>
+   
 
 
 ## <a id="development"></a>Development and Notes
