@@ -121,9 +121,9 @@ To export all images' annotations, press File -> Export-all located in the menu 
    * Having shadows is okay so long as they are not larger than the wing itself and preferrable away from the wing tip and start point.
                 It is difficult to find smaller contours in the wing when the veins and the area in between are similar in value so shadows within the in interior of the wing                   could be an issue if the veins are not extremely darker. Glare on the veins could cause the veins to get lost, but glare anywhere else is okay. 
    
- Ideal image for inner wing lighting
+ _Ideal image for inner wing lighting_
    ![lighting](resources/lighting.PNG)
- Large shadows, too much glare
+ _Large shadows, too much glare_
    ![shadow](resources/shadows.PNG)
    
  * Both wing tip and start are in the image:
@@ -134,9 +134,9 @@ To export all images' annotations, press File -> Export-all located in the menu 
  * Nail plosh ring  is not present or is not large:
    * A nail polish ring can create shadows which can be counted as a contour if large enough.
    
-  Large problematic shadow due to polish ring
+  _Large problematic shadow due to polish ring_
  ![ring](resources/polishRing.PNG)
-  Unproblematic polish ring
+  _Unproblematic polish ring_
  ![ring](resources/OKpolishRing.PNG)
  
  * Size of the image:
@@ -145,8 +145,8 @@ To export all images' annotations, press File -> Export-all located in the menu 
    * In some of the images provided the rims of the wings were a bit blurry. 
       When an image is blurry it introduces more lighter tones of gray which when binarized are lost.
       
-  Most ideal in terms of obtaining a binary image.
-  Currently unknown why inner contours are unable to be identified with this image.
+  _Most ideal in terms of obtaining a binary image.
+  Currently unknown why inner contours are unable to be identified with this image._
  ![sharp](resources/sharp.PNG)
    
 
