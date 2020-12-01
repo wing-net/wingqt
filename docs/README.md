@@ -12,6 +12,7 @@ This page serves to document the software and its use, as well as helping troubl
     * [Exporting Data](#exporting)
 * [Taking Compatible Images](#images)
 * [Development and Notes](#development)
+* [Additional Resources](#resources)
 
 
 ## <a id="about"></a>About Wingqt
@@ -155,4 +156,5 @@ To export all images' annotations, press File -> Export-all located in the menu 
 
 Unfortunately, a high enough accuracy in landmark detection in order to be included in wingqt was not achieved. There was however, significant progress and effort made towards this goal and various documented ipython notebooks containing our work are available [here](https://drive.google.com/drive/folders/1OlxtS053Py5w2K76AmrcHM32NCYr8yI6?usp=sharing).
 
-
+## <a id="resources"></a>Additional Resources
+A databank with images of mosquito wings can be found [here](https://xyom-clic.eu/clic-bank/)
